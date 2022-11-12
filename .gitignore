@@ -55,5 +55,5 @@ dkms.conf
 .idea/
 .vscode/
 .vs/
-.cmake-build-debug/
+cmake-build-debug/
 ft_ls
