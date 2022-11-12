@@ -50,3 +50,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Mine
+.idea/
+.vscode/
+.vs/
+.cmake-build-debug/
+ft_ls
