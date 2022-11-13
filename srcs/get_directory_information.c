@@ -19,9 +19,8 @@ void collect_children_nodes(t_data *ls_obj) {
 	dprintf(2, "prefix=%s, name=%s, fullpath=%s\n", ls_obj->prefix, ls_obj->name, ls_obj->fullpath);
 	while ((pDirent = readdir(dir)) != NULL) {
 		if (!(g_flags & FLAG_a)) {
-			if (ft_strncmp(pDirent->d_name, ".", sizeof(".")) == 0 || ft_strncmp(pDirent->d_name, "..", sizeof("..")) == 0) {
+			if (pDirent->d_name[0] == '.')
 				continue ;
-			}
 		}
 //		dprintf(2, "found %s\n", pDirent->d_name);
 		t_data*	childNode = create_new_object(ls_obj->fullpath, pDirent);

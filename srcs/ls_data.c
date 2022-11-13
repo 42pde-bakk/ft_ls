@@ -96,6 +96,9 @@ void*	destroy_object(t_data* dataObj) {
 }
 
 void	print_object(const t_data* dataObj) {
+	if (dataObj->vector->size > 1) {
+		sort_dataObjects((t_data **)dataObj->vector->arr, dataObj->vector->size);
+	}
 	bool print_header = false;
 	if (dataObj->vector->size) {
 //		ft_dprintf(2, "%d && %d >1 => %d\n", dataObj->parent, dataObj->parent->vector->size, dataObj->parent && dataObj->parent->vector->size > 1);
@@ -108,7 +111,7 @@ void	print_object(const t_data* dataObj) {
 			ft_printf("%s:\n", dataObj->name);
 		for (size_t i = 0; i < dataObj->vector->size; i++) {
 			print_object(dataObj->vector->arr[i]);
-			ft_printf("\t");
+			ft_printf("  ");
 		}
 //		if (print_header)
 //			ft_printf("%c", '\n');

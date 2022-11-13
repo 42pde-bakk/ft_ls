@@ -43,4 +43,9 @@ void collect_children_nodes(t_data *ls_obj);
  */
 unsigned char get_filetype(const char* name);
 
+/*
+ * sort.c
+ */
+void	sort_dataObjects(t_data **dataObjects, size_t dataObject_amount);
+
 #endif //FT_LS_DATA_OBJ_H
