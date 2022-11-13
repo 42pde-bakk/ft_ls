@@ -16,7 +16,7 @@ void collect_children_nodes(t_data *ls_obj) {
 		perror("opendir");
 		exit(EXIT_FAILURE);
 	}
-	dprintf(2, "prefix=%s, name=%s, fullpath=%s\n", ls_obj->prefix, ls_obj->name, ls_obj->fullpath);
+//	dprintf(2, "prefix=%s, name=%s, fullpath=%s\n", ls_obj->prefix, ls_obj->name, ls_obj->fullpath);
 	while ((pDirent = readdir(dir)) != NULL) {
 		if (!(g_flags & FLAG_a)) {
 			if (pDirent->d_name[0] == '.')

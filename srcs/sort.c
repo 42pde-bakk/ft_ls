@@ -29,6 +29,7 @@ static void	swap(t_data *dataObjects[], const idx_t i, const idx_t j) {
 
 static bool	shouldSwap(const t_data *dataObject, const t_data *pivot) {
 	const int cmp_ret = case_insensitive_strcmp(dataObject->name, pivot->name);
+//	ft_dprintf(2, "compare(%s?, %s) => %d\n", dataObject->name, pivot->name, cmp_ret);
 
 	return (cmp_ret < 0);
 }

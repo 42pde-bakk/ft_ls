@@ -101,23 +101,21 @@ void	print_object(const t_data* dataObj) {
 	}
 	bool print_header = false;
 	if (dataObj->vector->size) {
-//		ft_dprintf(2, "%d && %d >1 => %d\n", dataObj->parent, dataObj->parent->vector->size, dataObj->parent && dataObj->parent->vector->size > 1);
 		if (g_flags & FLAG_R || (dataObj->parent && dataObj->parent->vector->size > 1)) {
 			print_header = true;
-
 		}
-		ft_dprintf(2, "print_header is %d\n", print_header);
 		if (print_header)
 			ft_printf("%s:\n", dataObj->name);
 		for (size_t i = 0; i < dataObj->vector->size; i++) {
 			print_object(dataObj->vector->arr[i]);
-			ft_printf("  ");
+			if (i != dataObj->vector->size - 1)
+				ft_printf("  ");
 		}
-//		if (print_header)
-//			ft_printf("%c", '\n');
+		if (print_header)
+			ft_printf("%c", '\n');
 		ft_printf("%c", '\n');
 	}
-	else {
+	else if (dataObj->name) {
 		ft_printf("%s", dataObj->name);
 	}
 }

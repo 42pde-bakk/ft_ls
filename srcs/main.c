@@ -115,11 +115,9 @@ int main(int argc, char** argv) {
 	if (flags == -1u)
 		exit(EXIT_FAILURE);
 
-	ft_printf("collected %zu files\n", file_vector->size);
 	if (file_vector->size == 0) {
 		t_data*	dataObj = create_new_object_blank(".", true);
 		ptrvector_pushback(root_obj->vector, dataObj);
-//		dprintf(2, "after all that, size of the vector is %zu\n", root_obj->vector->size);
 	} else {
 		for (size_t i = 0; i < file_vector->size; i++) {
 			const char* const filename = file_vector->arr[i];
@@ -133,14 +131,14 @@ int main(int argc, char** argv) {
 	}
 
 	// Then sort the entries
+	print_object(root_obj);
 
 	// and output them
-//	dprintf(2, "dataObj_vec->size = %zu\n", dataObj_vec->size);
-	for (size_t i = 0; i < root_obj->vector->size; i++) {
-		print_object(root_obj->vector->arr[i]);
-		root_obj->vector->arr[i] = destroy_object(root_obj->vector->arr[i]);
-		ft_printf("\n");
-	}
+//	for (size_t i = 0; i < root_obj->vector->size; i++) {
+//		print_object(root_obj->vector->arr[i]);
+//		root_obj->vector->arr[i] = destroy_object(root_obj->vector->arr[i]);
+////		ft_printf("\n");
+//	}
 	ptrvector_destroy(file_vector);
 	destroy_object(root_obj);
 	return (EXIT_SUCCESS);
