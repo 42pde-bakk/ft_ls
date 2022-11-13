@@ -8,10 +8,10 @@
 #include <string.h>
 #include <errno.h>
 
-unsigned char get_filetype(const char* name) {
+unsigned char get_filetype(const char *name) {
 	struct stat statbuf;
 
-	ft_memset(&statbuf, 0, sizeof(statbuf));
+	memset(&statbuf, 0, sizeof(statbuf));
 	if (stat(name, &statbuf) == -1) {
 		ft_dprintf(STDERR_FILENO, "ls: cannot access '%s': %s\n", name, strerror(errno));
 		return (DT_UNKNOWN);

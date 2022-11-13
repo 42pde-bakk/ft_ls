@@ -14,18 +14,17 @@ typedef struct s_data {
 	char*	name;
 	char*	prefix;
 	char*	fullpath;
-	struct stat	buf;
+	struct stat	statbuf;
 	t_ptrvector	*vector; // for Recursive mode
-	struct dirent	pDirent;
 	struct s_data	*parent;
 }	t_data;
 
 t_data *create_new_object_root();
 t_data *create_new_object(const char *prefix, struct dirent *pdirent);
 t_data *create_new_object_blank(char *fullpath, bool go_down_layer);
-t_data *create_new_object_of_type(const char *const prefix, const char *const name, unsigned char type, bool go_down_layer);
+t_data *create_new_object_of_type(const char *const name, unsigned char type, bool go_down_layer);
 
-void	print_object(const t_data* dataObj);
+bool print_object(const t_data* dataObj);
 void*	destroy_object(t_data* dataObj);
 
 /*
@@ -41,7 +40,7 @@ void collect_children_nodes(t_data *ls_obj);
 /*
  * get_filetype.c
  */
-unsigned char get_filetype(const char* name);
+unsigned char get_filetype(const char *name);
 
 /*
  * sort.c

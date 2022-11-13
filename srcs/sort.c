@@ -27,10 +27,25 @@ static void	swap(t_data *dataObjects[], const idx_t i, const idx_t j) {
 	dataObjects[j] = tmp;
 }
 
-static bool	shouldSwap(const t_data *dataObject, const t_data *pivot) {
-	const int cmp_ret = case_insensitive_strcmp(dataObject->name, pivot->name);
-//	ft_dprintf(2, "compare(%s?, %s) => %d\n", dataObject->name, pivot->name, cmp_ret);
+int		compare_by_time(struct timespec lhs, struct timespec rhs) {
+	if (lhs.tv_sec == rhs.tv_sec)
+		return ((int)(lhs.tv_nsec - rhs.tv_nsec));
+	else
+		return ((int)(lhs.tv_sec - rhs.tv_sec));
+}
 
+static bool	shouldSwap(const t_data *dataObject, const t_data *pivot) {
+	int cmp_ret;
+
+	if (g_flags & FLAG_t) {
+		cmp_ret = compare_by_time(pivot->statbuf.st_mtim, dataObject->statbuf.st_mtim);
+	} else {
+		cmp_ret = case_insensitive_strcmp(dataObject->name, pivot->name);
+	}
+
+	if (g_flags & FLAG_r) {
+		cmp_ret *= -1;
+	}
 	return (cmp_ret < 0);
 }
 
