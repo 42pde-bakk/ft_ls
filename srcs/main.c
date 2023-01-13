@@ -65,7 +65,13 @@ int main(int argc, char** argv) {
 
 	if (file_vector->size == 0) {
 		t_data*	dataObj = create_new_object_blank(".", true);
-		ptrvector_pushback(root_obj->vector, dataObj);
+		for (size_t i = 0; i < dataObj->vector->size; i++) {
+			ptrvector_pushback(root_obj->vector, dataObj->vector->arr[i]);
+		}
+		ptrvector_destroy(dataObj->vector);
+		free(dataObj->name);
+		free(dataObj);
+//		ptrvector_pushback(root_obj->vector, dataObj);
 	} else {
 		for (size_t i = 0; i < file_vector->size; i++) {
 			const char* const filename = file_vector->arr[i];
