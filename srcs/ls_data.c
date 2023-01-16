@@ -171,11 +171,12 @@ void	print_total_blocks(const t_ptrvector* vec) {
 		 * I could also have used the filesize / 1024, but I'll stick to this for now.
 		 */
 	}
-	printf("total %zu\n", total);
+	ft_printf("total %lu\n", total);
 }
 
 // returns if it printed the header
 bool print_object(const t_data* dataObj) {
+	printf("IM HERE\n");
 	bool print_header = false;
 
 	if (dataObj->vector->size > 1) {
@@ -183,11 +184,24 @@ bool print_object(const t_data* dataObj) {
 	}
 
 	if (g_flags & FLAG_l) {
+		if (g_flags & FLAG_R) {
+			ft_printf("%s:\n", dataObj->name);
+		}
 		if (dataObj->vector->size > 1)
 			print_total_blocks(dataObj->vector);
 		for (size_t i = 0; i < dataObj->vector->size; i++) {
 			print_long(dataObj->vector->arr[i]);
 		}
+//		if (g_flags & FLAG_R) {
+//			ft_printf("\n");
+//			for (size_t i = 0; i < dataObj->vector->size; i++) {
+//				const t_data* child =  dataObj->vector->arr[i];
+//				if (S_ISDIR(child->statbuf.st_mode)) {
+//					print_object(child);
+//				}
+//			}
+//		}
+
 	}
 	else {
 		if (dataObj->vector->size) {

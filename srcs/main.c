@@ -7,6 +7,7 @@
 #include "ft_printf.h"
 #include "flags.h"
 #include <dirent.h>
+#include <stdio.h>
 #include "data_obj.h"
 unsigned int g_flags;
 
@@ -64,13 +65,16 @@ int main(int argc, char** argv) {
 		exit(EXIT_FAILURE);
 
 	if (file_vector->size == 0) {
+		printf("IN HERE SIKE!\n");
 		t_data*	dataObj = create_new_object_blank(".", true);
 		for (size_t i = 0; i < dataObj->vector->size; i++) {
 			ptrvector_pushback(root_obj->vector, dataObj->vector->arr[i]);
+//			((t_data *)dataObj->vector->arr[i])->parent = root_obj;
 		}
 		ptrvector_destroy(dataObj->vector);
 		free(dataObj->name);
 		free(dataObj);
+		root_obj->name = ft_strdup(".");
 //		ptrvector_pushback(root_obj->vector, dataObj);
 	} else {
 		for (size_t i = 0; i < file_vector->size; i++) {
@@ -83,6 +87,7 @@ int main(int argc, char** argv) {
 			}
 		}
 	}
+	printf("lets print\n");
 	// Then sort the entries and print them
 	print_object(root_obj);
 
