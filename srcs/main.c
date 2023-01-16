@@ -49,13 +49,32 @@ unsigned int parse_flags(char** argv, t_ptrvector* file_vector) {
 	return (flags);
 }
 
+bool	is_dot_or_double_dot(const char* str) {
+	return (ft_strncmp(str, ".", 2) == 0 || ft_strncmp(str, "..", 3) == 0);
+}
+
+void	run_dmc(t_data* dataObject) {
+	if (S_ISDIR(dataObject->statbuf.st_mode)) {
+		collect_children_nodes(dataObject);
+	}
+	print_object(dataObject);
+	if (S_ISDIR(dataObject->statbuf.st_mode) &&  g_flags & FLAG_R) {
+		for (size_t i = 0; i < dataObject->vector->size; i++) {
+			t_data* child = dataObject->vector->arr[i];
+			(void)child;
+
+			if (!is_dot_or_double_dot(child->name) && S_ISDIR(child->statbuf.st_mode))
+				run_dmc(child);
+		}
+	}
+}
 
 int main(int argc, char** argv) {
 	unsigned int	flags;
 	t_ptrvector		*file_vector = ptrvector_init(4, false);
-	t_data			*root_obj = create_new_object_root();
+	t_data* rootObj;
 
-	if (!file_vector || !root_obj) {
+	if (!file_vector) {
 		exit(EXIT_FAILURE);
 	}
 	(void)argc;
@@ -65,33 +84,17 @@ int main(int argc, char** argv) {
 		exit(EXIT_FAILURE);
 
 	if (file_vector->size == 0) {
-		printf("IN HERE SIKE!\n");
-		t_data*	dataObj = create_new_object_blank(".", true);
-		for (size_t i = 0; i < dataObj->vector->size; i++) {
-			ptrvector_pushback(root_obj->vector, dataObj->vector->arr[i]);
-//			((t_data *)dataObj->vector->arr[i])->parent = root_obj;
-		}
-		ptrvector_destroy(dataObj->vector);
-		free(dataObj->name);
-		free(dataObj);
-		root_obj->name = ft_strdup(".");
-//		ptrvector_pushback(root_obj->vector, dataObj);
+		rootObj = create_new_rootnode(".");
+		run_dmc(rootObj);
+		destroy_object(rootObj);
 	} else {
 		for (size_t i = 0; i < file_vector->size; i++) {
 			const char* const filename = file_vector->arr[i];
-			unsigned char filetype = get_filetype(filename);
-			if (filetype != DT_UNKNOWN) {
-				t_data*	dataObj = create_new_object_of_type(filename, filetype, true);
-				ptrvector_pushback(root_obj->vector, dataObj);
-				dataObj->parent = root_obj;
-			}
+			rootObj = create_new_rootnode(filename);
+			run_dmc(rootObj);
+			destroy_object(rootObj);
 		}
 	}
-	printf("lets print\n");
-	// Then sort the entries and print them
-	print_object(root_obj);
-
 	ptrvector_destroy(file_vector);
-	destroy_object(root_obj);
 	return (EXIT_SUCCESS);
 }

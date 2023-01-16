@@ -4,7 +4,6 @@
 #include "libft.h"
 #include "data_obj.h"
 
-
 char	*ft_str3join(const char *a, const char *b, const char *c) {
 	char			*out;
 	const size_t	len_a = ft_strlen(a),

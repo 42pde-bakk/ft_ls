@@ -10,19 +10,17 @@
 #include <dirent.h>
 
 typedef struct s_data {
-	unsigned char	type;
 	char*	name;
-	char*	prefix;
 	char*	fullpath;
 	struct stat	statbuf;
 	t_ptrvector	*vector; // for Recursive mode
-	struct s_data	*parent;
+	bool	is_root_node;
 }	t_data;
 
-t_data *create_new_object_root();
-t_data *create_new_object(const char *prefix, struct dirent *pdirent);
-t_data *create_new_object_blank(char *fullpath, bool go_down_layer);
-t_data *create_new_object_of_type(const char *const name, unsigned char type, bool go_down_layer);
+t_data* create_new_rootnode(const char* arg);
+t_data *create_new_object(const char *prefix, const char* pdirent_name);
+//t_data *create_new_object_blank(char *fullpath, bool go_down_layer);
+//t_data *create_new_object_of_type(const char *const name, unsigned char type, bool go_down_layer);
 
 bool print_object(const t_data* dataObj);
 void*	destroy_object(t_data* dataObj);
@@ -46,5 +44,4 @@ unsigned char get_filetype(const char *name);
  * sort.c
  */
 void	sort_dataObjects(t_data **dataObjects, size_t dataObject_amount);
-
 #endif //FT_LS_DATA_OBJ_H

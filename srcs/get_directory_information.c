@@ -7,9 +7,10 @@
 #include "data_obj.h"
 #include "libft.h"
 
-void collect_children_nodes(t_data *ls_obj) {
+void	collect_children_nodes(t_data *ls_obj) {
 	DIR*	dir;
 	struct dirent *pDirent;
+	t_data*	childNode;
 
 	dir = opendir(ls_obj->fullpath);
 	if (dir == NULL) {
@@ -20,12 +21,10 @@ void collect_children_nodes(t_data *ls_obj) {
 			if (pDirent->d_name[0] == '.')
 				continue ;
 		}
-		t_data*	childNode = create_new_object(ls_obj->fullpath, pDirent);
+		childNode = create_new_object(ls_obj->fullpath, pDirent->d_name);
+		if (!childNode)
+			continue;
 
-		if (g_flags & FLAG_R && childNode->type == DT_DIR)
-			collect_children_nodes(childNode);
-
-		childNode->parent = ls_obj;
 		ptrvector_pushback(ls_obj->vector, childNode);
 	}
 	closedir(dir);
