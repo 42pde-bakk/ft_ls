@@ -18,7 +18,7 @@ void	collect_children_nodes(t_data *ls_obj) {
 	}
 	while ((pDirent = readdir(dir)) != NULL) {
 		if (!(g_flags & FLAG_a)) {
-			if (pDirent->d_name[0] == '.')
+			if (pDirent->d_name[0] == '.' && !(g_flags & FLAG_f))
 				continue ;
 		}
 		childNode = create_new_object(ls_obj->fullpath, pDirent->d_name);

@@ -86,19 +86,22 @@ void	print_total_blocks(const t_ptrvector* vec) {
 bool print_object(const t_data* dataObj) {
 	bool print_header = false;
 
-	if (dataObj->vector->size > 1) {
+	if (dataObj->vector->size > 1 && !(g_flags & FLAG_f)) {
 		sort_dataObjects((t_data **)dataObj->vector->arr, dataObj->vector->size);
 	}
 
-
 	if (g_flags & FLAG_l) {
-		if (g_flags & FLAG_R) {
-			ft_printf("%s:\n", dataObj->fullpath);
-		}
-		if (dataObj->vector->size > 1)
-			print_total_blocks(dataObj->vector);
-		for (size_t i = 0; i < dataObj->vector->size; i++) {
-			print_long(dataObj->vector->arr[i]);
+		if (g_flags & FLAG_d) {
+			print_long(dataObj);
+		} else {
+			if (g_flags & FLAG_R) {
+				ft_printf("%s:\n", dataObj->fullpath);
+			}
+			if (dataObj->vector->size > 1)
+				print_total_blocks(dataObj->vector);
+			for (size_t i = 0; i < dataObj->vector->size; i++) {
+				print_long(dataObj->vector->arr[i]);
+			}
 		}
 	}
 	else {

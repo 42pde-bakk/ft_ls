@@ -6,8 +6,6 @@
 #include "libft.h"
 #include "ft_printf.h"
 #include "flags.h"
-#include <dirent.h>
-#include <stdio.h>
 #include "data_obj.h"
 unsigned int g_flags;
 
@@ -34,6 +32,9 @@ unsigned int parse_flags(char** argv, t_ptrvector* file_vector) {
 					case 't':
 						flags |= FLAG_t;
 						break ;
+					case 'f':
+						flags |= FLAG_f;
+						break ;
 					default:
 						ft_printf("ls: invalid option -- '%c'\n", flag);
 						exit(EXIT_FAILURE);
@@ -58,7 +59,7 @@ void	run_dmc(t_data* dataObject) {
 		collect_children_nodes(dataObject);
 	}
 	print_object(dataObject);
-	if (S_ISDIR(dataObject->statbuf.st_mode) &&  g_flags & FLAG_R) {
+	if (S_ISDIR(dataObject->statbuf.st_mode) && (g_flags & FLAG_R) && !(g_flags & FLAG_d)) {
 		for (size_t i = 0; i < dataObject->vector->size; i++) {
 			t_data* child = dataObject->vector->arr[i];
 			(void)child;
