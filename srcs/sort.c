@@ -2,19 +2,30 @@
 // Created by peer on 13-11-22.
 //
 #include <string.h>
+#include <stdio.h>
 #include "flags.h"
 #include "data_obj.h"
 #include "libft.h"
-#include "ft_printf.h"
+
 typedef int idx_t;
+
+static int ft_strcmp(const char* const lhs, const char* const rhs) {
+	size_t i = 0;
+
+	while (lhs[i] && rhs[i] && lhs[i] == rhs[i]) {
+		i++;
+	}
+	return (lhs[i] - rhs[i]);
+}
 
 static int	case_insensitive_strcmp(const char* lhs, const char* rhs) {
 	size_t i = 0;
 
-	while (lhs[i] && rhs[i]) {
-		if (ft_tolower(lhs[i]) != ft_tolower(rhs[i])) {
-			break ;
-		}
+	if (lhs[0] == '.')
+		++lhs;
+	if (rhs[0] == '.')
+		++rhs;
+	while (lhs[i] && rhs[i] && ft_tolower(lhs[i]) == ft_tolower(rhs[i])) {
 		i++;
 	}
 	return (ft_tolower(lhs[i]) - ft_tolower(rhs[i]));
@@ -41,6 +52,9 @@ static bool	shouldSwap(const t_data *dataObject, const t_data *pivot) {
 		cmp_ret = compare_by_time(pivot->statbuf.st_mtim, dataObject->statbuf.st_mtim);
 	} else {
 		cmp_ret = case_insensitive_strcmp(dataObject->name, pivot->name);
+		if (cmp_ret == 0) {
+			cmp_ret = ft_strcmp(pivot->name, dataObject->name);
+		}
 	}
 
 	if (g_flags & FLAG_r) {
