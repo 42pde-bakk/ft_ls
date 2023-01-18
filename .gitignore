@@ -57,3 +57,4 @@ dkms.conf
 .vs/
 cmake-build-debug/
 ft_ls
+build/
