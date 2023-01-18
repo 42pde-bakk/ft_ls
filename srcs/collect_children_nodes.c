@@ -4,13 +4,12 @@
 
 #include <stdio.h>
 #include "flags.h"
-#include "data_obj.h"
-#include "libft.h"
+#include "t_node.h"
 
-void	collect_children_nodes(t_data *ls_obj) {
+void	collect_children_nodes(t_node *ls_obj) {
 	DIR*	dir;
 	struct dirent *pDirent;
-	t_data*	childNode;
+	t_node*	childNode;
 
 	dir = opendir(ls_obj->fullpath);
 	if (dir == NULL) {

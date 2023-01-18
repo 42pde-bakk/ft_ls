@@ -7,5 +7,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra")
 file(GLOB_RECURSE SOURCE_FILES "srcs/*/*.c" "srcs/*.c")
 file(GLOB HEADER_FILES "include/*.h" "include/*/*.h")
 
-add_executable(ft_ls ${SOURCE_FILES} ${HEADER_FILES} srcs/print.c)
+add_executable(ft_ls ${SOURCE_FILES} ${HEADER_FILES} srcs/print.c include/ft_ls.h srcs/parsing.c srcs/symbolic_links.c)
 include_directories(include libft/include)

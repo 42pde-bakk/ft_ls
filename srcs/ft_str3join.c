@@ -2,7 +2,7 @@
 // Created by peer on 12-11-22.
 //
 #include "libft.h"
-#include "data_obj.h"
+#include "t_node.h"
 
 char	*ft_str3join(const char *a, const char *b, const char *c) {
 	char			*out;
