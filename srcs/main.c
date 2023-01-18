@@ -7,14 +7,36 @@
 #include "flags.h"
 #include "t_node.h"
 #include "ft_ls.h"
+#include "ft_printf.h"
 
 static bool is_dot_or_double_dot(const char* str) {
 	return (ft_strncmp(str, ".", 2) == 0 || ft_strncmp(str, "..", 3) == 0);
 }
 
+void	print_filetype(const t_node* node) {
+	if (S_ISDIR(node->statbuf.st_mode)) {
+		ft_printf("directory\n");
+	} else if (S_ISLNK(node->statbuf.st_mode)) {
+		ft_printf("link\n");
+	} else if (S_ISREG(node->statbuf.st_mode)) {
+		ft_printf("regular file\n");
+	} else if (S_ISBLK(node->statbuf.st_mode)) {
+		ft_printf("block device\n");
+	} else if (S_ISSOCK(node->statbuf.st_mode)) {
+		ft_printf("socket\n");
+	} else if (S_ISCHR(node->statbuf.st_mode)) {
+		ft_printf("character device\n");
+	} else if (S_ISFIFO(node->statbuf.st_mode)) {
+		ft_printf("FIFO\n");
+	}
+}
+
 void start_ls(t_node* dataObject) {
+//	print_filetype(dataObject);
 	if (S_ISDIR(dataObject->statbuf.st_mode)) {
-		collect_children_nodes(dataObject);
+		if (collect_children_nodes(dataObject) == EXIT_FAILURE) {
+			return;
+		}
 	}
 	print_object(dataObject);
 	if (S_ISDIR(dataObject->statbuf.st_mode) && (g_flags & FLAG_R) && !(g_flags & FLAG_d)) {

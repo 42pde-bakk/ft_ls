@@ -98,29 +98,30 @@ void print_object(const t_node* dataObj) {
 	}
 
 	if (g_flags & FLAG_l) {
-		if (g_flags & FLAG_d) {
-			print_long(dataObj);
-		} else {
+		if (S_ISDIR(dataObj->statbuf.st_mode)) {
 			if (g_flags & FLAG_R) {
 				ft_printf("%s:\n", dataObj->fullpath);
 			}
-			if (dataObj->vector->size > 1)
-				print_total_blocks(dataObj->vector);
+			print_total_blocks(dataObj->vector);
 			for (size_t i = 0; i < dataObj->vector->size; i++) {
 				print_long(dataObj->vector->arr[i]);
 			}
+		} else {
+			print_long(dataObj);
 		}
 	} else {
-		if (dataObj->vector->size) {
+		if (S_ISDIR(dataObj->statbuf.st_mode)) {
 			if (g_flags & FLAG_R) {
 				ft_printf("%s:\n", dataObj->fullpath);
 			}
-			for (size_t i = 0; i < dataObj->vector->size; i++) {
-				print_short(dataObj->vector->arr[i]);
-				if (i != dataObj->vector->size - 1)
-					ft_printf("  ");
+			if (dataObj->vector->size > 0) {
+				for (size_t i = 0; i < dataObj->vector->size; i++) {
+					print_short(dataObj->vector->arr[i]);
+					if (i != dataObj->vector->size - 1)
+						ft_printf("  ");
+				}
+				ft_printf("%c", '\n');
 			}
-			ft_printf("%c", '\n');
 		} else if (dataObj->name) {
 			print_short(dataObj);
 			ft_printf("\n");

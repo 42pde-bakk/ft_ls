@@ -7,10 +7,16 @@
 #include "flags.h"
 
 unsigned int g_flags;
+static char* g_program_name = "ft_ls";
+
+const char*	get_program_name() {
+	return (g_program_name);
+}
 
 unsigned int parse_flags(char** argv, t_ptrvector* file_vector) {
 	unsigned int flags = 0;
 
+	g_program_name = argv[0];
 	for (size_t i = 1; argv[i]; i++) {
 		if (argv[i][0] == '-') {
 			for (size_t n = 1; argv[i][n]; n++) {
@@ -36,7 +42,7 @@ unsigned int parse_flags(char** argv, t_ptrvector* file_vector) {
 						flags &= ~FLAG_t;
 						break;
 					default:
-						ft_printf("ls: invalid option -- '%c'\n", flag);
+						ft_printf("%s: invalid option -- '%c'\n", get_program_name(), flag);
 						exit(EXIT_FAILURE);
 				}
 			}
