@@ -10,20 +10,30 @@
 #include "ft_printf.h"
 #include "ft_ls.h"
 
+static int get_amount_digits(size_t n) {
+	int digits = 1;
+	while (n > 9) {
+		n /= 10;
+		digits++;
+	}
+	return (digits);
+}
+
 static void print_permissions(const struct stat* statbuf) {
+	const __mode_t mode = statbuf->st_mode;
 	const char perms[] = {
-			S_ISLNK(statbuf->st_mode) ? 'l' : S_ISDIR(statbuf->st_mode) ? 'd' : '-',
-			statbuf->st_mode & S_IRUSR ? 'r' : '-',
-			statbuf->st_mode & S_IWUSR ? 'w' : '-',
-			statbuf->st_mode & S_ISUID ? 'S' : (statbuf->st_mode & S_IXUSR) ? 'x' : '-',
+			S_ISSOCK(mode) ? 's' : S_ISLNK(mode) ? 'l' : S_ISDIR(mode) ? 'd' : S_ISFIFO(mode) ? 'p' : '-',
+			mode & S_IRUSR ? 'r' : '-',
+			mode & S_IWUSR ? 'w' : '-',
+			mode & S_ISUID ? 'S' : (mode & S_IXUSR) ? 'x' : '-',
 
-			statbuf->st_mode & S_IRGRP ? 'r' : '-',
-			statbuf->st_mode & S_IWGRP ? 'w' : '-',
-			statbuf->st_mode & S_ISGID ? 'S' : (statbuf->st_mode & S_IXGRP) ? 'x' : '-',
+			mode & S_IRGRP ? 'r' : '-',
+			mode & S_IWGRP ? 'w' : '-',
+			mode & S_ISGID ? 'S' : (mode & S_IXGRP) ? 'x' : '-',
 
-			statbuf->st_mode & S_IROTH ? 'r' : '-',
-			statbuf->st_mode & S_IWOTH ? 'w' : '-',
-			statbuf->st_mode & S_ISVTX ? 't' : (statbuf->st_mode & S_IXOTH) ? 'x' : '-',
+			mode & S_IROTH ? 'r' : '-',
+			mode & S_IWOTH ? 'w' : '-',
+			mode & S_ISVTX ? 't' : (mode & S_IXOTH) ? 'x' : '-',
 			'\0'
 	};
 	ft_printf("%s", perms);
@@ -68,6 +78,16 @@ static void print_long(const t_node* dataObj) {
 	print_name(dataObj);
 }
 
+static void print_long_with_columnsizes(const t_node* dataObj, const t_column_sizes* columnSizes) {
+	print_permissions(&dataObj->statbuf);
+	ft_printf(" %*d", columnSizes->nb_links, dataObj->statbuf.st_nlink);
+	ft_printf(" %-*s", columnSizes->user, get_username(&dataObj->statbuf));
+	ft_printf(" %-*s", columnSizes->group, get_groupname(&dataObj->statbuf));
+	ft_printf(" %*d", columnSizes->filesize, dataObj->statbuf.st_size);
+	print_mtime(&dataObj->statbuf);
+	print_name(dataObj);
+}
+
 static void print_short(const t_node* dataObj) {
 	ft_printf("%s", dataObj->name);
 }
@@ -86,6 +106,24 @@ static void print_total_blocks(const t_ptrvector* vec) {
 	ft_printf("total %lu\n", total);
 }
 
+static t_column_sizes 	get_column_sizes(const t_node* const node) {
+	t_column_sizes columnSizes = {
+			1,
+			1,
+			1,
+			1
+	};
+
+	for (size_t i = 0; i < node->vector->size; i++) {
+		const t_node *child_node = (const t_node *)node->vector->arr[i];
+		columnSizes.nb_links = MAX(columnSizes.nb_links, get_amount_digits(child_node->statbuf.st_nlink));
+		columnSizes.user = MAX(columnSizes.user, ft_strlen(get_username(&child_node->statbuf)));
+		columnSizes.group = MAX(columnSizes.group, ft_strlen(get_groupname(&child_node->statbuf)));
+		columnSizes.filesize = MAX(columnSizes.filesize, get_amount_digits(child_node->statbuf.st_size));
+	}
+	return (columnSizes);
+}
+
 void print_object(const t_node* dataObj) {
 	if (dataObj->vector->size > 1 && (!(g_flags & FLAG_f) || g_flags & FLAG_t)) {
 		ptrvector_sort(dataObj->vector, &compare_nodes);
@@ -97,8 +135,9 @@ void print_object(const t_node* dataObj) {
 				ft_printf("%s:\n", dataObj->fullpath);
 			}
 			print_total_blocks(dataObj->vector);
+			const t_column_sizes columnSizes = get_column_sizes(dataObj);
 			for (size_t i = 0; i < dataObj->vector->size; i++) {
-				print_long(dataObj->vector->arr[i]);
+				print_long_with_columnsizes(dataObj->vector->arr[i], &columnSizes);
 			}
 		} else {
 			print_long(dataObj);
