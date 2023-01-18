@@ -94,7 +94,8 @@ static void print_total_blocks(const t_ptrvector* vec) {
 
 void print_object(const t_node* dataObj) {
 	if (dataObj->vector->size > 1 && !(g_flags & FLAG_f)) {
-		quickSort((t_node**)dataObj->vector->arr, 0, (idx_t)(dataObj->vector->size - 1));
+		ptrvector_sort(dataObj->vector, &compare_nodes);
+//		quickSort((t_node**)dataObj->vector->arr, 0, (idx_t)(dataObj->vector->size - 1));
 	}
 
 	if (g_flags & FLAG_l) {

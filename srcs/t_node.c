@@ -2,7 +2,6 @@
 // Created by peer on 12-11-22.
 //
 #include "t_node.h"
-#include "ft_ls.h"
 #include "libft.h"
 
 t_node* create_new_rootnode(const char* arg) {

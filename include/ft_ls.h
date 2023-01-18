@@ -14,7 +14,8 @@ typedef int idx_t;
 unsigned int parse_flags(char** argv, t_ptrvector* file_vector);
 
 // srcs/sort.c
-void quickSort(t_node** dataObjects, idx_t low, idx_t high);
+//t_ptrvector_sort_function compare_nodes;
+int	compare_nodes(const void* dataObject, const void* pivot);
 
 // srcs/collect_children_nodes.c
 void collect_children_nodes(t_node* ls_obj);
