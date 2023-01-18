@@ -15,15 +15,15 @@ static void print_permissions(const struct stat* statbuf) {
 			S_ISDIR(statbuf->st_mode) ? 'd' : '-',
 			statbuf->st_mode & S_IRUSR ? 'r' : '-',
 			statbuf->st_mode & S_IWUSR ? 'w' : '-',
-			statbuf->st_mode & S_IXUSR ? 'x' : '-',
+			statbuf->st_mode & S_ISUID ? 'S' : (statbuf->st_mode & S_IXUSR) ? 'x' : '-',
 
 			statbuf->st_mode & S_IRGRP ? 'r' : '-',
 			statbuf->st_mode & S_IWGRP ? 'w' : '-',
-			statbuf->st_mode & S_IXGRP ? 'x' : '-',
+			statbuf->st_mode & S_ISGID ? 'S' : (statbuf->st_mode & S_IXGRP) ? 'x' : '-',
 
 			statbuf->st_mode & S_IROTH ? 'r' : '-',
 			statbuf->st_mode & S_IWOTH ? 'w' : '-',
-			statbuf->st_mode & S_IXOTH ? 'x' : '-',
+			statbuf->st_mode & S_ISVTX ? 't' : (statbuf->st_mode & S_IXOTH) ? 'x' : '-',
 			'\0'
 	};
 	ft_printf("%s", perms);

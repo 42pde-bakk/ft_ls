@@ -16,7 +16,7 @@ t_node* create_new_rootnode(const char* arg) {
 	if (!obj)
 		exit(EXIT_FAILURE);
 
-	if ((lstat(arg, &obj->statbuf)) == -1) {
+	if ((stat(arg, &obj->statbuf)) == -1) {
 		ft_dprintf(STDERR_FILENO, "%s: cannot access '%s': %s\n", get_program_name(), arg, strerror(errno));
 		exit(EXIT_FAILURE);
 	}

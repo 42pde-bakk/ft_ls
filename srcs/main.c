@@ -32,7 +32,6 @@ void	print_filetype(const t_node* node) {
 }
 
 void start_ls(t_node* dataObject) {
-//	print_filetype(dataObject);
 	if (S_ISDIR(dataObject->statbuf.st_mode)) {
 		if (collect_children_nodes(dataObject) == EXIT_FAILURE) {
 			return;
