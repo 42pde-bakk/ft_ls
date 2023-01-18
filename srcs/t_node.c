@@ -6,7 +6,7 @@
 #include "libft.h"
 
 t_node* create_new_rootnode(const char* arg) {
-	t_node*	obj = ft_calloc(1, sizeof(t_node));
+	t_node* obj = ft_calloc(1, sizeof(t_node));
 
 	if (!obj)
 		exit(EXIT_FAILURE);
@@ -22,8 +22,8 @@ t_node* create_new_rootnode(const char* arg) {
 	return (obj);
 }
 
-t_node *create_new_object(const char *prefix, const char* pdirent_name) {
-	t_node*	obj = ft_calloc(1, sizeof(t_node));
+t_node* create_new_object(const char* prefix, const char* pdirent_name) {
+	t_node* obj = ft_calloc(1, sizeof(t_node));
 
 	if (!obj)
 		exit(EXIT_FAILURE);
@@ -41,7 +41,7 @@ t_node *create_new_object(const char *prefix, const char* pdirent_name) {
 	return (obj);
 }
 
-void	destroy_object(t_node* dataObj) {
+void destroy_object(t_node* dataObj) {
 	free(dataObj->name);
 	free(dataObj->fullpath);
 	for (size_t i = 0; i < dataObj->vector->size; i++) {

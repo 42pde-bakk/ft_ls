@@ -4,12 +4,12 @@
 #include "libft.h"
 #include "t_node.h"
 
-char	*ft_str3join(const char *a, const char *b, const char *c) {
-	char			*out;
-	const size_t	len_a = ft_strlen(a),
+char* ft_str3join(const char* a, const char* b, const char* c) {
+	char* out;
+	const size_t len_a = ft_strlen(a),
 			len_b = ft_strlen(b),
 			len_c = ft_strlen(c);
-	const size_t	total_length = len_a + len_b + len_c + 1;
+	const size_t total_length = len_a + len_b + len_c + 1;
 
 	out = calloc(total_length, sizeof(char));
 	if (out == NULL)

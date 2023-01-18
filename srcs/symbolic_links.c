@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "t_node.h"
 
-char*	get_symlink_path(const t_node* dataObj) {
+char* get_symlink_path(const t_node* dataObj) {
 	char* buf;
 	ssize_t nbytes, buffer_size = dataObj->statbuf.st_size + 1;
 

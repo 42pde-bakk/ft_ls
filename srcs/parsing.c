@@ -18,29 +18,28 @@ unsigned int parse_flags(char** argv, t_ptrvector* file_vector) {
 				switch (flag) {
 					case 'l':
 						flags |= FLAG_l;
-						break ;
+						break;
 					case 'R':
 						flags |= FLAG_R;
-						break ;
+						break;
 					case 'a':
 						flags |= FLAG_a;
-						break ;
+						break;
 					case 'r':
 						flags |= FLAG_r;
-						break ;
+						break;
 					case 't':
 						flags |= FLAG_t;
-						break ;
+						break;
 					case 'f':
 						flags |= FLAG_f;
-						break ;
+						break;
 					default:
 						ft_printf("ls: invalid option -- '%c'\n", flag);
 						exit(EXIT_FAILURE);
 				}
 			}
-		}
-		else {
+		} else {
 			// Add the file/folder to our vector
 			ptrvector_pushback(file_vector, argv[i]);
 		}

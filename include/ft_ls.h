@@ -14,18 +14,18 @@ typedef int idx_t;
 unsigned int parse_flags(char** argv, t_ptrvector* file_vector);
 
 // srcs/sort.c
-void	quickSort(t_node **dataObjects, idx_t low, idx_t high);
+void quickSort(t_node** dataObjects, idx_t low, idx_t high);
 
 // srcs/collect_children_nodes.c
-void	collect_children_nodes(t_node *ls_obj);
+void collect_children_nodes(t_node* ls_obj);
 
 // srcs/ft_str3join.c
-char	*ft_str3join(const char *a, const char *b, const char *c);
+char* ft_str3join(const char* a, const char* b, const char* c);
 
 // srcs/get_filetype.c
-unsigned char get_filetype(const char *name);
+unsigned char get_filetype(const char* name);
 
 // srcs/symbolic_links.c
-char*	get_symlink_path(const t_node* dataObj);
+char* get_symlink_path(const t_node* dataObj);
 
 #endif //FT_LS_FT_LS_H

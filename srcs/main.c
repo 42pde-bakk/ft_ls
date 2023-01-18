@@ -8,11 +8,11 @@
 #include "t_node.h"
 #include "ft_ls.h"
 
-static bool	is_dot_or_double_dot(const char* str) {
+static bool is_dot_or_double_dot(const char* str) {
 	return (ft_strncmp(str, ".", 2) == 0 || ft_strncmp(str, "..", 3) == 0);
 }
 
-void	start_ls(t_node* dataObject) {
+void start_ls(t_node* dataObject) {
 	if (S_ISDIR(dataObject->statbuf.st_mode)) {
 		collect_children_nodes(dataObject);
 	}
@@ -28,8 +28,8 @@ void	start_ls(t_node* dataObject) {
 }
 
 int main(int argc, char** argv) {
-	unsigned int	flags;
-	t_ptrvector		*file_vector = ptrvector_init(4, false);
+	unsigned int flags;
+	t_ptrvector* file_vector = ptrvector_init(4, false);
 	t_node* rootObj;
 
 	if (!file_vector) {

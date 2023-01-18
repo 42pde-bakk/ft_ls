@@ -10,8 +10,8 @@
 #include "ft_printf.h"
 #include "ft_ls.h"
 
-static void	print_permissions(const struct stat* statbuf) {
-	const char	perms[] = {
+static void print_permissions(const struct stat* statbuf) {
+	const char perms[] = {
 			S_ISDIR(statbuf->st_mode) ? 'd' : '-',
 			statbuf->st_mode & S_IRUSR ? 'r' : '-',
 			statbuf->st_mode & S_IWUSR ? 'w' : '-',
@@ -29,32 +29,32 @@ static void	print_permissions(const struct stat* statbuf) {
 	ft_printf("%s", perms);
 }
 
-static const char*	get_username(const struct stat* statbuf) {
+static const char* get_username(const struct stat* statbuf) {
 	struct passwd* passwd_data = getpwuid(statbuf->st_uid);
 	return (passwd_data->pw_name);
 }
 
-static const char*	get_groupname(const struct stat* statbuf) {
+static const char* get_groupname(const struct stat* statbuf) {
 	struct group* group_data = getgrgid(statbuf->st_gid);
 	return (group_data->gr_name);
 }
 
-static void	convert_string_to_lower(char* s) {
+static void convert_string_to_lower(char* s) {
 	for (size_t i = 0; s[i]; i++) {
 		s[i] = (char)ft_tolower(s[i]);
 	}
 }
 
-static void	print_mtime(const struct stat* statbuf) {
+static void print_mtime(const struct stat* statbuf) {
 	char* p = ctime(&statbuf->st_mtim.tv_sec);
 	if (!p)
-		return ;
+		return;
 	p[ft_strlen(p) - 9] = 0;
 	convert_string_to_lower(p);
 	ft_printf(" %s", p + 4);
 }
 
-static void	print_name(const t_node* dataObj) {
+static void print_name(const t_node* dataObj) {
 	if (S_ISLNK(dataObj->statbuf.st_mode)) {
 		char* symlink_path = get_symlink_path(dataObj);
 		ft_printf(" %s -> %s\n", dataObj->name, symlink_path);
@@ -64,7 +64,7 @@ static void	print_name(const t_node* dataObj) {
 	}
 }
 
-static void	print_long(const t_node* dataObj) {
+static void print_long(const t_node* dataObj) {
 	print_permissions(&dataObj->statbuf);
 	ft_printf(" %lu", dataObj->statbuf.st_nlink);
 	ft_printf(" %s", get_username(&dataObj->statbuf));
@@ -74,11 +74,11 @@ static void	print_long(const t_node* dataObj) {
 	print_name(dataObj);
 }
 
-static void	print_short(const t_node* dataObj) {
+static void print_short(const t_node* dataObj) {
 	ft_printf("%s", dataObj->name);
 }
 
-static void	print_total_blocks(const t_ptrvector* vec) {
+static void print_total_blocks(const t_ptrvector* vec) {
 	size_t total = 0;
 	for (size_t i = 0; i < vec->size; i++) {
 		const t_node* item = vec->arr[i];
@@ -92,9 +92,9 @@ static void	print_total_blocks(const t_ptrvector* vec) {
 	ft_printf("total %lu\n", total);
 }
 
-void	print_object(const t_node* dataObj) {
+void print_object(const t_node* dataObj) {
 	if (dataObj->vector->size > 1 && !(g_flags & FLAG_f)) {
-		quickSort((t_node **)dataObj->vector->arr, 0, (idx_t)(dataObj->vector->size - 1));
+		quickSort((t_node**)dataObj->vector->arr, 0, (idx_t)(dataObj->vector->size - 1));
 	}
 
 	if (g_flags & FLAG_l) {
@@ -110,8 +110,7 @@ void	print_object(const t_node* dataObj) {
 				print_long(dataObj->vector->arr[i]);
 			}
 		}
-	}
-	else {
+	} else {
 		if (dataObj->vector->size) {
 			if (g_flags & FLAG_R) {
 				ft_printf("%s:\n", dataObj->fullpath);
@@ -122,8 +121,7 @@ void	print_object(const t_node* dataObj) {
 					ft_printf("  ");
 			}
 			ft_printf("%c", '\n');
-		}
-		else if (dataObj->name) {
+		} else if (dataObj->name) {
 			print_short(dataObj);
 			ft_printf("\n");
 		}

@@ -8,7 +8,7 @@
 #include <string.h>
 #include <errno.h>
 
-unsigned char get_filetype(const char *name) {
+unsigned char get_filetype(const char* name) {
 	struct stat statbuf;
 
 	memset(&statbuf, 0, sizeof(statbuf));
@@ -18,13 +18,21 @@ unsigned char get_filetype(const char *name) {
 	}
 
 	switch (statbuf.st_mode & S_IFMT) {
-		case S_IFBLK: return (DT_BLK);
-		case S_IFCHR: return (DT_CHR);
-		case S_IFDIR: return (DT_DIR);
-		case S_IFIFO: return (DT_FIFO);
-		case S_IFLNK: return (DT_LNK);
-		case S_IFREG: return (DT_REG);
-		case S_IFSOCK: return (DT_SOCK);
-		default: return (DT_UNKNOWN);
+		case S_IFBLK:
+			return (DT_BLK);
+		case S_IFCHR:
+			return (DT_CHR);
+		case S_IFDIR:
+			return (DT_DIR);
+		case S_IFIFO:
+			return (DT_FIFO);
+		case S_IFLNK:
+			return (DT_LNK);
+		case S_IFREG:
+			return (DT_REG);
+		case S_IFSOCK:
+			return (DT_SOCK);
+		default:
+			return (DT_UNKNOWN);
 	}
 }
