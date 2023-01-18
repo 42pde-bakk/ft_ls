@@ -10,6 +10,8 @@
 #include "ft_printf.h"
 #include "ft_ls.h"
 
+static bool	please_print_another_newline = false;
+
 static int get_amount_digits(size_t n) {
 	int digits = 1;
 	while (n > 9) {
@@ -33,7 +35,7 @@ static void print_permissions(const struct stat* statbuf) {
 
 			mode & S_IROTH ? 'r' : '-',
 			mode & S_IWOTH ? 'w' : '-',
-			mode & S_ISVTX ? 't' : (mode & S_IXOTH) ? 'x' : '-',
+			mode & S_ISVTX ? 'T' : (mode & S_IXOTH) ? 'x' : '-',
 			'\0'
 	};
 	ft_printf("%s", perms);
@@ -132,12 +134,18 @@ void print_object(const t_node* dataObj) {
 	if (g_flags & FLAG_l) {
 		if (S_ISDIR(dataObj->statbuf.st_mode)) {
 			if (g_flags & FLAG_R) {
+				if (please_print_another_newline)
+					ft_printf("\n");
 				ft_printf("%s:\n", dataObj->fullpath);
 			}
 			print_total_blocks(dataObj->vector);
 			const t_column_sizes columnSizes = get_column_sizes(dataObj);
 			for (size_t i = 0; i < dataObj->vector->size; i++) {
 				print_long_with_columnsizes(dataObj->vector->arr[i], &columnSizes);
+			}
+			if (g_flags & FLAG_R) {
+				please_print_another_newline = true;
+//				ft_printf("\n");
 			}
 		} else {
 			print_long(dataObj);
@@ -159,8 +167,5 @@ void print_object(const t_node* dataObj) {
 			print_short(dataObj);
 			ft_printf("\n");
 		}
-	}
-	if (g_flags & FLAG_R) {
-		ft_printf("\n");
 	}
 }
