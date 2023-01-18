@@ -33,6 +33,7 @@ unsigned int parse_flags(char** argv, t_ptrvector* file_vector) {
 						break;
 					case 'f':
 						flags |= FLAG_f;
+						flags &= ~FLAG_t;
 						break;
 					default:
 						ft_printf("ls: invalid option -- '%c'\n", flag);
