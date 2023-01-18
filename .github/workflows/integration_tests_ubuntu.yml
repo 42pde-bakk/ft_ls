@@ -1,0 +1,20 @@
+name: Integration Tests Ubuntu
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - run: git submodule update --init --recursive --remote
+    - name: make
+      run: make
+    - name: regular tests
+      run: ./tests/test_regular.sh
