@@ -12,7 +12,7 @@
 
 static void print_permissions(const struct stat* statbuf) {
 	const char perms[] = {
-			S_ISDIR(statbuf->st_mode) ? 'd' : '-',
+			S_ISLNK(statbuf->st_mode) ? 'l' : S_ISDIR(statbuf->st_mode) ? 'd' : '-',
 			statbuf->st_mode & S_IRUSR ? 'r' : '-',
 			statbuf->st_mode & S_IWUSR ? 'w' : '-',
 			statbuf->st_mode & S_ISUID ? 'S' : (statbuf->st_mode & S_IXUSR) ? 'x' : '-',
@@ -39,24 +39,18 @@ static const char* get_groupname(const struct stat* statbuf) {
 	return (group_data->gr_name);
 }
 
-static void convert_string_to_lower(char* s) {
-	for (size_t i = 0; s[i]; i++) {
-		s[i] = (char)ft_tolower(s[i]);
-	}
-}
-
 static void print_mtime(const struct stat* statbuf) {
 	char* p = ctime(&statbuf->st_mtim.tv_sec);
 	if (!p)
 		return;
 	p[ft_strlen(p) - 9] = 0;
-	convert_string_to_lower(p);
 	ft_printf(" %s", p + 4);
 }
 
 static void print_name(const t_node* dataObj) {
-	if (S_ISLNK(dataObj->statbuf.st_mode)) {
-		char* symlink_path = get_symlink_path(dataObj);
+	char* symlink_path;
+
+	if (S_ISLNK(dataObj->statbuf.st_mode) && (symlink_path = get_symlink_path(dataObj)) != NULL) {
 		ft_printf(" %s -> %s\n", dataObj->name, symlink_path);
 		free(symlink_path);
 	} else {

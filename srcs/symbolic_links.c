@@ -3,8 +3,9 @@
 //
 
 #include <unistd.h>
-#include <stdio.h>
+#include <string.h>
 #include "t_node.h"
+#include "ft_ls.h"
 
 char* get_symlink_path(const t_node* dataObj) {
 	char* buf;
@@ -18,8 +19,8 @@ char* get_symlink_path(const t_node* dataObj) {
 		exit(EXIT_FAILURE);
 	nbytes = readlink(dataObj->fullpath, buf, buffer_size);
 	if (nbytes == -1) {
-		perror("readlink");
-		exit(EXIT_FAILURE);
+		free(buf);
+		return (NULL);
 	}
 	buf[nbytes] = '\0';
 	return (buf);
