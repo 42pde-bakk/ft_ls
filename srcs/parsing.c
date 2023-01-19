@@ -41,6 +41,9 @@ unsigned int parse_flags(char** argv, t_ptrvector* file_vector) {
 						flags |= FLAG_f;
 						flags &= ~FLAG_t;
 						break;
+					case 'c':
+						flags |= FLAG_c;
+						break;
 					default:
 						ft_printf("%s: invalid option -- '%c'\n", get_program_name(), flag);
 						exit(EXIT_FAILURE);
