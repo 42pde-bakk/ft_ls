@@ -9,7 +9,7 @@
 #include "sorting.h"
 
 // https://github.com/ekg/filevercmp/blob/master/filevercmp.c
-int	ft_filevercmp(const char* const s1, const char* const s2) {
+int ft_filevercmp(const char* const s1, const char* const s2) {
 	if (strcmp(".", s1) == 0)
 		return -1;
 	if (strcmp(".", s2) == 0)
@@ -21,13 +21,13 @@ int	ft_filevercmp(const char* const s1, const char* const s2) {
 	return (0);
 }
 
-bool	is_dot_or_double_dot(const char* const str) {
+bool is_dot_or_double_dot(const char* const str) {
 	return (strcmp(str, ".") == 0 || strcmp(str, "..") == 0);
 }
 
-int	compare_nodes(const void* v_dataObject, const void* v_pivot) {
-	const t_node* dataObject = (t_node *)v_dataObject;
-	const t_node* pivot = (t_node *)v_pivot;
+int compare_nodes(const void* v_dataObject, const void* v_pivot) {
+	const t_node* dataObject = (t_node*)v_dataObject;
+	const t_node* pivot = (t_node*)v_pivot;
 	int cmp_ret;
 
 	if (g_flags & FLAG_t) {

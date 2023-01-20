@@ -86,7 +86,7 @@ static void print_long_with_columnsizes(const t_node* dataObj, const t_column_si
 	print_name(dataObj);
 }
 
-void	print_long_listing_format(const t_node* dataObj, const t_column_sizes* columnSizes) {
+void print_long_listing_format(const t_node* dataObj, const t_column_sizes* columnSizes) {
 	if (columnSizes == NULL)
 		return (print_long(dataObj));
 	print_long_with_columnsizes(dataObj, columnSizes);

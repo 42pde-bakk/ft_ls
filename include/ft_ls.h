@@ -8,11 +8,12 @@
 #include "t_node.h"
 
 // srcs/parsing.c
-const char*	get_program_name();
+const char* get_program_name();
+
 unsigned int parse_flags(char** argv, t_ptrvector* file_vector);
 
 // srcs/sort.c
-int	compare_nodes(const void* dataObject, const void* pivot);
+int compare_nodes(const void* dataObject, const void* pivot);
 
 // srcs/collect_children_nodes.c
 int collect_children_nodes(t_node* ls_obj);

@@ -33,7 +33,7 @@ static int cmp_mtime(const t_node* a, const t_node* b, t_func_cmpstrings cmp) {
 	return (diff);
 }
 
-int	sort_on_timestamp(const t_node* dataObject, const t_node* pivot, t_func_cmpstrings strcmpFunc) {
+int sort_on_timestamp(const t_node* dataObject, const t_node* pivot, t_func_cmpstrings strcmpFunc) {
 	if (g_flags & FLAG_c) {
 		return (cmp_ctime(pivot, dataObject, strcmpFunc));
 	}

@@ -9,7 +9,7 @@
 unsigned int g_flags;
 static char* g_program_name = "ft_ls";
 
-const char*	get_program_name() {
+const char* get_program_name() {
 	return (g_program_name);
 }
 

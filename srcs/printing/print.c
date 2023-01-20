@@ -8,7 +8,7 @@
 #include "printing.h"
 #include "ft_ls.h"
 
-static bool	please_print_another_newline = false;
+static bool please_print_another_newline = false;
 
 static void print_short(const t_node* dataObj) {
 	ft_printf("%s", dataObj->name);
@@ -67,8 +67,7 @@ void print_object(const t_node* dataObj) {
 
 	if (g_flags & FLAG_l) {
 		print_object_long(dataObj);
-	}
-	else {
+	} else {
 		print_object_short(dataObj);
 	}
 	if (g_flags & FLAG_R)

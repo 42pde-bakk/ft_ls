@@ -13,7 +13,7 @@ static bool is_dot_or_double_dot(const char* str) {
 	return (ft_strncmp(str, ".", 2) == 0 || ft_strncmp(str, "..", 3) == 0);
 }
 
-void	print_filetype(const t_node* node) {
+void print_filetype(const t_node* node) {
 	if (S_ISDIR(node->statbuf.st_mode)) {
 		ft_printf("directory\n");
 	} else if (S_ISLNK(node->statbuf.st_mode)) {

@@ -15,7 +15,7 @@ static int get_amount_digits(size_t n) {
 	return (digits);
 }
 
-t_column_sizes 	get_column_sizes(const t_node* const node) {
+t_column_sizes get_column_sizes(const t_node* const node) {
 	t_column_sizes columnSizes = {
 			1,
 			1,
@@ -24,7 +24,7 @@ t_column_sizes 	get_column_sizes(const t_node* const node) {
 	};
 
 	for (size_t i = 0; i < node->vector->size; i++) {
-		const t_node *child_node = (const t_node *)node->vector->arr[i];
+		const t_node* child_node = (const t_node*)node->vector->arr[i];
 		columnSizes.nb_links = MAX(columnSizes.nb_links, get_amount_digits(child_node->statbuf.st_nlink));
 		columnSizes.user = MAX(columnSizes.user, ft_strlen(get_username(&child_node->statbuf)));
 		columnSizes.group = MAX(columnSizes.group, ft_strlen(get_groupname(&child_node->statbuf)));

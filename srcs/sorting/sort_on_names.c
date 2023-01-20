@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include "libft.h"
 
-static bool	is_special_case(const char c) {
+static bool is_special_case(const char c) {
 	return (c == '.' || c == '_');
 }
 
@@ -23,7 +23,7 @@ int case_insensitive_strcmp(const char* lhs, const char* rhs) {
 			continue;
 		}
 		if (ft_tolower(lhs[lhs_i]) != ft_tolower(rhs[rhs_i])) {
-			break ;
+			break;
 		}
 		++lhs_i;
 		++rhs_i;
