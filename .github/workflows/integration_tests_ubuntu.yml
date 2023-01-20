@@ -16,5 +16,15 @@ jobs:
     - run: git submodule update --init --recursive --remote
     - name: make
       run: make
-    - name: regular tests
-      run: make re  # ./tests/test_regular.sh
+    - name: Regular tests
+      run: ./tests/test_regular.sh
+      env:
+        LC_ALL: C
+    - name: Flag tests
+      run: ./tests/test_flags.sh
+      env:
+        LC_ALL: C
+    - name: Setuid, Setgid, Stickybi tests
+      run: ./tests/test_usergroupid.sh
+      env:
+        LC_ALL: C
