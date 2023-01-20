@@ -8,6 +8,7 @@
 #include <stddef.h>
 
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#define SECONDS_PER_YEAR 31556926
 
 typedef struct s_column_sizes {
 	int nb_links;

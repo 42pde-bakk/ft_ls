@@ -4,6 +4,7 @@
 
 #include <grp.h>
 #include <pwd.h>
+#include <stdio.h>
 #include "t_node.h"
 #include "ft_ls.h"
 #include "ft_printf.h"
@@ -17,15 +18,15 @@ static void print_permissions(const struct stat* statbuf) {
 			S_ISSOCK(mode) ? 's' : S_ISLNK(mode) ? 'l' : S_ISDIR(mode) ? 'd' : S_ISFIFO(mode) ? 'p' : '-',
 			mode & S_IRUSR ? 'r' : '-',
 			mode & S_IWUSR ? 'w' : '-',
-			mode & S_ISUID ? 'S' : (mode & S_IXUSR) ? 'x' : '-',
+			mode & S_ISUID ? 's' : (mode & S_IXUSR) ? 'x' : '-',
 
 			mode & S_IRGRP ? 'r' : '-',
 			mode & S_IWGRP ? 'w' : '-',
-			mode & S_ISGID ? 'S' : (mode & S_IXGRP) ? 'x' : '-',
+			mode & S_ISGID ? 's' : (mode & S_IXGRP) ? 'x' : '-',
 
 			mode & S_IROTH ? 'r' : '-',
 			mode & S_IWOTH ? 'w' : '-',
-			mode & S_ISVTX ? 'T' : (mode & S_IXOTH) ? 'x' : '-',
+			mode & S_ISVTX ? 't' : (mode & S_IXOTH) ? 'x' : '-',
 			'\0'
 	};
 	ft_printf("%s", perms);
@@ -40,12 +41,6 @@ const char* get_groupname(const struct stat* statbuf) {
 	struct group* group_data = getgrgid(statbuf->st_gid);
 	return (group_data->gr_name);
 }
-
-#define SECONDS_PER_YEAR 31556926
-int get_year(const time_t t) {
-	return (int)(t / SECONDS_PER_YEAR);
-}
-
 static void print_time(const struct stat* statbuf) {
 	const time_t current_time = time(NULL);
 	const time_t check_time = (g_flags & FLAG_c) ? statbuf->st_ctim.tv_sec : statbuf->st_mtim.tv_sec;
@@ -82,7 +77,7 @@ static void print_long(const t_node* dataObj) {
 	ft_printf(" %lu", dataObj->statbuf.st_nlink);
 	ft_printf(" %s", get_username(&dataObj->statbuf));
 	ft_printf(" %s", get_groupname(&dataObj->statbuf));
-	ft_printf(" %ld", dataObj->statbuf.st_size);
+	ft_printf(" %lu", (unsigned long int)dataObj->statbuf.st_size);
 	print_time(&dataObj->statbuf);
 	print_name(dataObj);
 }
@@ -92,7 +87,7 @@ static void print_long_with_columnsizes(const t_node* dataObj, const t_column_si
 	ft_printf(" %*d", columnSizes->nb_links, dataObj->statbuf.st_nlink);
 	ft_printf(" %-*s", columnSizes->user, get_username(&dataObj->statbuf));
 	ft_printf(" %-*s", columnSizes->group, get_groupname(&dataObj->statbuf));
-	ft_printf(" %*d", columnSizes->filesize, dataObj->statbuf.st_size);
+	ft_printf(" %*lu", columnSizes->filesize, (unsigned long int)dataObj->statbuf.st_size);
 	print_time(&dataObj->statbuf);
 	print_name(dataObj);
 }

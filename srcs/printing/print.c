@@ -16,16 +16,16 @@ static void print_short(const t_node* dataObj) {
 
 static void print_total_blocks(const t_ptrvector* vec) {
 	size_t total = 0;
+	size_t total2 = 0;
 	for (size_t i = 0; i < vec->size; i++) {
 		const t_node* item = vec->arr[i];
-		total += item->statbuf.st_blocks / 2;
+		total2 += item->statbuf.st_blocks / 2;
+		total += item->statbuf.st_size / 1024;
 		/*
-		 * The / 2 is because stat sees a block as 512 bytes,
-		 * but ls (and therefore ft_ls too) use 1024 bytes.
-		 * I could also have used the filesize / 1024, but I'll stick to this for now.
+		 * ls (and therefore ft_ls too) defines a block as 1024 bytes.
 		 */
 	}
-	ft_printf("total %lu\n", total);
+	ft_printf("total %lu\n", MAX(total, total2));
 }
 
 static void print_object_short(const t_node* dataObj) {
