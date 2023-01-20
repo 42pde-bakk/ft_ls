@@ -7,7 +7,7 @@
 #include "libft.h"
 
 static bool is_special_case(const char c) {
-	return (c == '.' || c == '_');
+	return (c == '.' || c == '_' || c == '-');
 }
 
 int case_insensitive_strcmp(const char* lhs, const char* rhs) {

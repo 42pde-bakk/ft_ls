@@ -41,8 +41,15 @@ const char* get_groupname(const struct stat* statbuf) {
 	return (group_data->gr_name);
 }
 
+#define SECONDS_PER_YEAR 31556926
+int get_year(const time_t t) {
+	return (int)(t / SECONDS_PER_YEAR);
+}
+
 static void print_time(const struct stat* statbuf) {
 	char* p;
+	size_t plen;
+	time_t current_time = time(NULL);
 
 	if (g_flags & FLAG_c) {
 		p = ctime(&statbuf->st_ctim.tv_sec);
@@ -51,8 +58,16 @@ static void print_time(const struct stat* statbuf) {
 	}
 	if (!p)
 		return;
-	p[ft_strlen(p) - 9] = 0;
-	ft_printf(" %s", p + 4);
+	plen = ft_strlen(p);
+	if (statbuf->st_mtim.tv_sec < current_time && current_time - statbuf->st_mtim.tv_sec > (SECONDS_PER_YEAR / 2)) {
+//	if (get_year(time(NULL)) != get_year(statbuf->st_mtim.tv_sec)) {
+		p[10] = 0;
+		p[plen - 1] = 0;
+		ft_printf(" %s %s", p + 4, p + 19);
+	} else {
+		p[plen - 9] = 0;
+		ft_printf(" %s", p + 4);
+	}
 }
 
 static void print_name(const t_node* dataObj) {
