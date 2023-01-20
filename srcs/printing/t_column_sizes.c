@@ -4,8 +4,7 @@
 
 #include "ft_ls.h"
 #include "libft.h"
-const char* get_username(const struct stat* statbuf);
-const char* get_groupname(const struct stat* statbuf);
+#include "printing.h"
 
 static int get_amount_digits(size_t n) {
 	int digits = 1;

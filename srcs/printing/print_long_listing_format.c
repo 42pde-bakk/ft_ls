@@ -9,6 +9,7 @@
 #include "ft_printf.h"
 #include "libft.h"
 #include "flags.h"
+#include "printing.h"
 
 static void print_permissions(const struct stat* statbuf) {
 	const __mode_t mode = statbuf->st_mode;

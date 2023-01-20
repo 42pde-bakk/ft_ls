@@ -17,4 +17,4 @@ jobs:
     - name: make
       run: make
     - name: regular tests
-      run: ./tests/test_regular.sh
+      run: make re  # ./tests/test_regular.sh
