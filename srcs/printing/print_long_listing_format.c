@@ -47,20 +47,16 @@ int get_year(const time_t t) {
 }
 
 static void print_time(const struct stat* statbuf) {
+	const time_t current_time = time(NULL);
+	const time_t check_time = (g_flags & FLAG_c) ? statbuf->st_ctim.tv_sec : statbuf->st_mtim.tv_sec;
 	char* p;
 	size_t plen;
-	time_t current_time = time(NULL);
 
-	if (g_flags & FLAG_c) {
-		p = ctime(&statbuf->st_ctim.tv_sec);
-	} else {
-		p = ctime(&statbuf->st_mtim.tv_sec);
-	}
+	p = ctime(&check_time);
 	if (!p)
 		return;
 	plen = ft_strlen(p);
-	if (statbuf->st_mtim.tv_sec < current_time && current_time - statbuf->st_mtim.tv_sec > (SECONDS_PER_YEAR / 2)) {
-//	if (get_year(time(NULL)) != get_year(statbuf->st_mtim.tv_sec)) {
+	if (check_time < current_time && (current_time - check_time) > (SECONDS_PER_YEAR / 2)) {
 		p[10] = 0;
 		p[plen - 1] = 0;
 		ft_printf(" %s %s", p + 4, p + 19);

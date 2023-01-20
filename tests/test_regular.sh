@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MY_ARGS=("libft" "srcs" "obj" "$HOME" "/tmp")
+MY_ARGS=("libft" "srcs" "obj" "$HOME" "." "/tmp")
 MY_EXECUTABLE="./ft_ls -l"
 REFERENCE_EXECUTABLE="ls -l"
 
