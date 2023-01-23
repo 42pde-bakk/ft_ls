@@ -1,0 +1,9 @@
+.git/
+.gitmodules
+obj/
+cmake-build-debug/
+debug/
+ft_ls
+**/*.o
+Dockerfile
+docker-compose.yml

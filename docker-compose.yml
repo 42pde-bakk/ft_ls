@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  ft:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+    - .:/code
+    tty: true
+    container_name: ft_ls
+    environment:
+      LC_ALL: C
+      ZSH_THEME: eastwood
+      TERM: xterm
