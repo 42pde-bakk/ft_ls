@@ -11,28 +11,15 @@
 extern char** environ;
 static bool locale_C = false;
 
-// https://github.com/ekg/filevercmp/blob/master/filevercmp.c
-int ft_filevercmp(const char* const s1, const char* const s2) {
-	if (strcmp(".", s1) == 0)
-		return -1;
-	if (strcmp(".", s2) == 0)
-		return 1;
-	if (strcmp("..", s1) == 0)
-		return -1;
-	if (strcmp("..", s2) == 0)
-		return 1;
-	return (0);
-}
-
 bool is_dot_or_double_dot(const char* const str) {
 	return (ft_strcmp(str, ".") == 0 || ft_strcmp(str, "..") == 0);
 }
 
-void	get_locale() {
+void get_locale() {
 	for (size_t i = 0; environ[i]; i++) {
 		if (ft_strncmp(environ[i], "LC_ALL=", 7) == 0) {
 			locale_C = ft_strcmp(environ[i] + 7, "C") == 0;
-			break ;
+			break;
 		}
 	}
 }
@@ -53,8 +40,7 @@ int compare_nodes(const void* v_dataObject, const void* v_pivot) {
 	} else {
 		if (locale_C) {
 			cmp_ret = ft_strcmp(dataObject->name, pivot->name);
-		}
-		else {
+		} else {
 			if (ft_strcmp(dataObject->name, pivot->name) == 0) {
 				return (0);
 			}

@@ -1,7 +1,6 @@
 //
 // Created by peer on 12-11-22.
 //
-#include <stdio.h>
 #include "t_node.h"
 #include "libft.h"
 #include "ft_printf.h"

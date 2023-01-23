@@ -17,7 +17,6 @@ typedef struct s_column_sizes {
 	int filesize;
 } t_column_sizes;
 
-
 const char* get_username(const struct stat* statbuf);
 
 const char* get_groupname(const struct stat* statbuf);

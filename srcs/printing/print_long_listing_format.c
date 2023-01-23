@@ -41,6 +41,7 @@ const char* get_groupname(const struct stat* statbuf) {
 	struct group* group_data = getgrgid(statbuf->st_gid);
 	return (group_data->gr_name);
 }
+
 static void print_time(const struct stat* statbuf) {
 	const time_t current_time = time(NULL);
 	const time_t check_time = (g_flags & FLAG_c) ? statbuf->st_ctim.tv_sec : statbuf->st_mtim.tv_sec;
