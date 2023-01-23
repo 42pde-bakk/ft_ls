@@ -7,11 +7,16 @@
 #include "ft_printf.h"
 #include "printing.h"
 #include "ft_ls.h"
+#include "libft.h"
 
 static bool please_print_another_newline = false;
 
 static void print_short(const t_node* dataObj) {
-	ft_printf("%s", dataObj->name);
+	if (ft_strchr(dataObj->name, ' ') && (S_ISDIR(dataObj->statbuf.st_mode) || S_ISREG(dataObj->statbuf.st_mode))) {
+		ft_printf("'%s'", dataObj->name);
+	} else {
+		ft_printf("%s", dataObj->name);
+	}
 }
 
 static void print_total_blocks(const t_ptrvector* vec) {

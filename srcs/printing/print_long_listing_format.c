@@ -18,15 +18,15 @@ static void print_permissions(const struct stat* statbuf) {
 			S_ISSOCK(mode) ? 's' : S_ISLNK(mode) ? 'l' : S_ISDIR(mode) ? 'd' : S_ISFIFO(mode) ? 'p' : '-',
 			mode & S_IRUSR ? 'r' : '-',
 			mode & S_IWUSR ? 'w' : '-',
-			mode & S_ISUID ? 's' : (mode & S_IXUSR) ? 'x' : '-',
+			mode & S_ISUID ? ((mode & S_IXUSR) ? 's' : 'S') : (mode & S_IXUSR) ? 'x' : '-',
 
 			mode & S_IRGRP ? 'r' : '-',
 			mode & S_IWGRP ? 'w' : '-',
-			mode & S_ISGID ? 's' : (mode & S_IXGRP) ? 'x' : '-',
+			mode & S_ISGID ? ((mode & S_IXGRP) ? 's' : 'S') : (mode & S_IXGRP) ? 'x' : '-',
 
 			mode & S_IROTH ? 'r' : '-',
 			mode & S_IWOTH ? 'w' : '-',
-			mode & S_ISVTX ? 't' : (mode & S_IXOTH) ? 'x' : '-',
+			mode & S_ISVTX ? ((mode & S_IXOTH) ? 't' : 'T') : (mode & S_IXOTH) ? 'x' : '-',
 			'\0'
 	};
 	ft_printf("%s", perms);
@@ -41,6 +41,7 @@ const char* get_groupname(const struct stat* statbuf) {
 	struct group* group_data = getgrgid(statbuf->st_gid);
 	return (group_data->gr_name);
 }
+
 static void print_time(const struct stat* statbuf) {
 	const time_t current_time = time(NULL);
 	const time_t check_time = (g_flags & FLAG_c) ? statbuf->st_ctim.tv_sec : statbuf->st_mtim.tv_sec;
@@ -68,7 +69,10 @@ static void print_name(const t_node* dataObj) {
 		ft_printf(" %s -> %s\n", dataObj->name, symlink_path);
 		free(symlink_path);
 	} else {
-		ft_printf(" %s\n", dataObj->name);
+		if (ft_strchr(dataObj->name, ' ') && (S_ISDIR(dataObj->statbuf.st_mode) || S_ISREG(dataObj->statbuf.st_mode)))
+			ft_printf(" '%s'\n", dataObj->name);
+		else
+			ft_printf(" %s\n", dataObj->name);
 	}
 }
 

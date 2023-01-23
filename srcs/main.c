@@ -13,24 +13,6 @@ static bool is_dot_or_double_dot(const char* str) {
 	return (ft_strncmp(str, ".", 2) == 0 || ft_strncmp(str, "..", 3) == 0);
 }
 
-void print_filetype(const t_node* node) {
-	if (S_ISDIR(node->statbuf.st_mode)) {
-		ft_printf("directory\n");
-	} else if (S_ISLNK(node->statbuf.st_mode)) {
-		ft_printf("link\n");
-	} else if (S_ISREG(node->statbuf.st_mode)) {
-		ft_printf("regular file\n");
-	} else if (S_ISBLK(node->statbuf.st_mode)) {
-		ft_printf("block device\n");
-	} else if (S_ISSOCK(node->statbuf.st_mode)) {
-		ft_printf("socket\n");
-	} else if (S_ISCHR(node->statbuf.st_mode)) {
-		ft_printf("character device\n");
-	} else if (S_ISFIFO(node->statbuf.st_mode)) {
-		ft_printf("FIFO\n");
-	}
-}
-
 void start_ls(t_node* dataObject) {
 	if (S_ISDIR(dataObject->statbuf.st_mode)) {
 		if (collect_children_nodes(dataObject) == EXIT_FAILURE) {
@@ -70,7 +52,13 @@ int main(int argc, char** argv) {
 		for (size_t i = 0; i < file_vector->size; i++) {
 			const char* const filename = file_vector->arr[i];
 			rootObj = create_new_rootnode(filename);
+			if (file_vector->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R)) {
+				ft_printf("%s:\n", rootObj->name);
+			}
 			start_ls(rootObj);
+			if (file_vector->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R) && i < file_vector->size - 1) {
+				ft_printf("\n");
+			}
 			destroy_object(rootObj);
 		}
 	}

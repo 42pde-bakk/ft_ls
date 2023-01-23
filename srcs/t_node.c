@@ -1,22 +1,26 @@
 //
 // Created by peer on 12-11-22.
 //
-#include <stdio.h>
 #include "t_node.h"
 #include "libft.h"
 #include "ft_printf.h"
 #include "ft_ls.h"
+#include "flags.h"
 #include <string.h>
 #include <errno.h>
-
+typedef int (*t_statFunc)(const char*, struct stat*);
 
 t_node* create_new_rootnode(const char* arg) {
+	t_statFunc statFunc = stat;
 	t_node* obj = ft_calloc(1, sizeof(t_node));
 
 	if (!obj)
 		exit(EXIT_FAILURE);
 
-	if ((stat(arg, &obj->statbuf)) == -1) {
+	if (g_flags & FLAG_l) {
+		statFunc = lstat;
+	}
+	if ((statFunc(arg, &obj->statbuf)) == -1) {
 		ft_dprintf(STDERR_FILENO, "%s: cannot access '%s': %s\n", get_program_name(), arg, strerror(errno));
 		exit(EXIT_FAILURE);
 	}
