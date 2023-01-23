@@ -19,6 +19,9 @@ chmod +t /tmp/specialstuff/stickybit_on /tmp/specialstuff/stickybit_dir_on
 
 diff <($MY_EXECUTABLE "$ARG") <($REFERENCE_EXECUTABLE "$ARG")
 if [[ $? -ne 0 ]]; then
-    echo "Test '$MY_EXECUTABLE $ARG' failed"
-exit 1
+  echo "Test '$MY_EXECUTABLE $ARG' failed"
+  mkdir -p /tmp/errlog
+  $MY_EXECUTABLE "$ARG" > /tmp/errlog/ft_ls.log
+  $REFERENCE_EXECUTABLE "$ARG" > /tmp/errlog/real_ls.log
+  exit 1
 fi

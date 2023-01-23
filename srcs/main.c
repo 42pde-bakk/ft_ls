@@ -52,11 +52,11 @@ int main(int argc, char** argv) {
 		for (size_t i = 0; i < file_vector->size; i++) {
 			const char* const filename = file_vector->arr[i];
 			rootObj = create_new_rootnode(filename);
-			if (S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R)) {
+			if (file_vector->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R)) {
 				ft_printf("%s:\n", rootObj->name);
 			}
 			start_ls(rootObj);
-			if (S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R) && i < file_vector->size - 1) {
+			if (file_vector->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R) && i < file_vector->size - 1) {
 				ft_printf("\n");
 			}
 			destroy_object(rootObj);
