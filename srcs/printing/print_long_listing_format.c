@@ -69,7 +69,10 @@ static void print_name(const t_node* dataObj) {
 		ft_printf(" %s -> %s\n", dataObj->name, symlink_path);
 		free(symlink_path);
 	} else {
-		ft_printf(" %s\n", dataObj->name);
+		if (ft_strchr(dataObj->name, ' '))
+			ft_printf(" '%s'\n", dataObj->name);
+		else
+			ft_printf(" %s\n", dataObj->name);
 	}
 }
 
