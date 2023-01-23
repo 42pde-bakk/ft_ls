@@ -12,7 +12,7 @@
 static bool please_print_another_newline = false;
 
 static void print_short(const t_node* dataObj) {
-	if (ft_strchr(dataObj->name, ' ')) {
+	if (ft_strchr(dataObj->name, ' ') && (S_ISDIR(dataObj->statbuf.st_mode) || S_ISREG(dataObj->statbuf.st_mode))) {
 		ft_printf("'%s'", dataObj->name);
 	} else {
 		ft_printf("%s", dataObj->name);
