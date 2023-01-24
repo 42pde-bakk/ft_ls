@@ -8,18 +8,14 @@
 #include "ft_ls.h"
 
 char* get_symlink_path(const t_node* dataObj) {
-	char* buf;
+	static char buf[PATH_MAX];
 	ssize_t nbytes, buffer_size = dataObj->statbuf.st_size + 1;
 
 	if (dataObj->statbuf.st_size == 0) {
 		buffer_size = PATH_MAX;
 	}
-	buf = malloc(buffer_size);
-	if (buf == NULL)
-		exit(EXIT_FAILURE);
 	nbytes = readlink(dataObj->fullpath, buf, buffer_size);
 	if (nbytes == -1) {
-		free(buf);
 		return (NULL);
 	}
 	buf[nbytes] = '\0';
