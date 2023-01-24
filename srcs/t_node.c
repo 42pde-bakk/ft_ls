@@ -22,7 +22,7 @@ t_node* create_new_rootnode(const char* arg) {
 	}
 	if ((statFunc(arg, &obj->statbuf)) == -1) {
 		ft_dprintf(STDERR_FILENO, "%s: cannot access '%s': %s\n", get_program_name(), arg, strerror(errno));
-		exit(EXIT_FAILURE);
+//		exit(EXIT_FAILURE);
 	}
 	obj->name = ft_strdup(arg);
 	obj->fullpath = ft_strdup(arg);
@@ -50,7 +50,9 @@ t_node* create_new_object(const char* prefix, const char* pdirent_name) {
 
 	if ((lstat(obj->fullpath, &obj->statbuf)) == -1) {
 		ft_dprintf(STDERR_FILENO, "%s: cannot access '%s': %s\n", get_program_name(), obj->fullpath, strerror(errno));
-		exit(EXIT_FAILURE);
+//		exit(EXIT_FAILURE);
+		destroy_object(obj);
+		return (NULL);
 	}
 
 	return (obj);
