@@ -27,7 +27,7 @@ int collect_children_nodes(t_node* ls_obj) {
 		}
 		childNode = create_new_object(ls_obj->fullpath, pDirent->d_name);
 		if (!childNode) {
-			ft_dprintf(STDERR_FILENO, "Cant create new object for %s / %s\n", ls_obj->fullpath, pDirent->d_name);
+//			ft_dprintf(STDERR_FILENO, "Cant create new object for %s / %s\n", ls_obj->fullpath, pDirent->d_name);
 			continue;
 		}
 

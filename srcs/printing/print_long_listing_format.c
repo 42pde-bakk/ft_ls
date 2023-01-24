@@ -33,12 +33,18 @@ static void print_permissions(const struct stat* statbuf) {
 }
 
 const char* get_username(const struct stat* statbuf) {
-	struct passwd* passwd_data = getpwuid(statbuf->st_uid);
+	const struct passwd* passwd_data = getpwuid(statbuf->st_uid);
+	if (!passwd_data) {
+		return (NULL);
+	}
 	return (passwd_data->pw_name);
 }
 
 const char* get_groupname(const struct stat* statbuf) {
-	struct group* group_data = getgrgid(statbuf->st_gid);
+	const struct group* group_data = getgrgid(statbuf->st_gid);
+	if (!group_data) {
+		return (NULL);
+	}
 	return (group_data->gr_name);
 }
 
@@ -67,7 +73,6 @@ static void print_name(const t_node* dataObj) {
 
 	if (S_ISLNK(dataObj->statbuf.st_mode) && (symlink_path = get_symlink_path(dataObj)) != NULL) {
 		ft_printf(" %s -> %s\n", dataObj->name, symlink_path);
-		free(symlink_path);
 	} else {
 		if (ft_strchr(dataObj->name, ' ') && (S_ISDIR(dataObj->statbuf.st_mode) || S_ISREG(dataObj->statbuf.st_mode)))
 			ft_printf(" '%s'\n", dataObj->name);
@@ -77,20 +82,33 @@ static void print_name(const t_node* dataObj) {
 }
 
 static void print_long(const t_node* dataObj) {
+	const char* const username = get_username(&dataObj->statbuf);
+	const char* const groupname = get_groupname(&dataObj->statbuf);
 	print_permissions(&dataObj->statbuf);
 	ft_printf(" %lu", dataObj->statbuf.st_nlink);
-	ft_printf(" %s", get_username(&dataObj->statbuf));
-	ft_printf(" %s", get_groupname(&dataObj->statbuf));
+	if (!username) {
+		ft_printf(" %u", dataObj->statbuf.st_uid);
+	} else {
+		ft_printf(" %s", username);
+	}
+	if (!groupname) {
+		ft_printf(" %u", dataObj->statbuf.st_gid);
+	} else {
+		ft_printf(" %s", groupname);
+	}
 	ft_printf(" %lu", (unsigned long int)dataObj->statbuf.st_size);
 	print_time(&dataObj->statbuf);
 	print_name(dataObj);
 }
 
 static void print_long_with_columnsizes(const t_node* dataObj, const t_column_sizes* columnSizes) {
+	const char* const username = get_username(&dataObj->statbuf);
+	const char* const groupname = get_groupname(&dataObj->statbuf);
+
 	print_permissions(&dataObj->statbuf);
 	ft_printf(" %*d", columnSizes->nb_links, dataObj->statbuf.st_nlink);
-	ft_printf(" %-*s", columnSizes->user, get_username(&dataObj->statbuf));
-	ft_printf(" %-*s", columnSizes->group, get_groupname(&dataObj->statbuf));
+	username ? ft_printf(" %-*s", columnSizes->user, username) : ft_printf(" %*u", columnSizes->user, dataObj->statbuf.st_uid);
+	groupname ? ft_printf(" %-*s", columnSizes->group, groupname) : ft_printf(" %*u", columnSizes->group, dataObj->statbuf.st_gid);
 	ft_printf(" %*lu", columnSizes->filesize, (unsigned long int)dataObj->statbuf.st_size);
 	print_time(&dataObj->statbuf);
 	print_name(dataObj);
