@@ -12,7 +12,7 @@
 static bool please_print_another_newline = false;
 
 static void print_short(const t_node* dataObj) {
-	if (ft_strchr(dataObj->name, ' ') && (S_ISDIR(dataObj->statbuf.st_mode) || S_ISREG(dataObj->statbuf.st_mode))) {
+	if (is_tty && ft_strchr(dataObj->name, ' ') && (S_ISDIR(dataObj->statbuf.st_mode) || S_ISREG(dataObj->statbuf.st_mode))) {
 		ft_printf("'%s'", dataObj->name);
 	} else {
 		ft_printf("%s", dataObj->name);
@@ -22,6 +22,7 @@ static void print_short(const t_node* dataObj) {
 static void print_total_blocks(const t_ptrvector* vec) {
 	size_t total = 0;
 	size_t total2 = 0;
+
 	for (size_t i = 0; i < vec->size; i++) {
 		const t_node* item = vec->arr[i];
 		total2 += item->statbuf.st_blocks / 2;

@@ -73,7 +73,7 @@ static void print_name(const t_node* dataObj) {
 	if (S_ISLNK(dataObj->statbuf.st_mode) && (symlink_path = get_symlink_path(dataObj)) != NULL) {
 		ft_printf(" %s -> %s\n", dataObj->name, symlink_path);
 	} else {
-		if (ft_strchr(dataObj->name, ' ') && (S_ISDIR(dataObj->statbuf.st_mode) || S_ISREG(dataObj->statbuf.st_mode)))
+		if (is_tty && ft_strchr(dataObj->name, ' ') && (S_ISDIR(dataObj->statbuf.st_mode) || S_ISREG(dataObj->statbuf.st_mode)))
 			ft_printf(" '%s'\n", dataObj->name);
 		else
 			ft_printf(" %s\n", dataObj->name);
@@ -83,6 +83,7 @@ static void print_name(const t_node* dataObj) {
 static void print_long(const t_node* dataObj) {
 	const char* const username = get_username(&dataObj->statbuf);
 	const char* const groupname = get_groupname(&dataObj->statbuf);
+
 	print_permissions(&dataObj->statbuf);
 	ft_printf(" %lu", dataObj->statbuf.st_nlink);
 	if (!username) {

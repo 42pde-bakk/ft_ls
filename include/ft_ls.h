@@ -6,6 +6,7 @@
 #define FT_LS_FT_LS_H
 
 #include "t_node.h"
+extern int is_tty;
 
 // srcs/parsing.c
 const char* get_program_name();

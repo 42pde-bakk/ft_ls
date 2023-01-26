@@ -3,11 +3,14 @@
 //
 
 #include <stddef.h>
+#include <unistd.h>
 #include "libft.h"
 #include "flags.h"
 #include "t_node.h"
 #include "ft_ls.h"
 #include "ft_printf.h"
+
+int is_tty;
 
 static bool is_dot_or_double_dot(const char* str) {
 	return (ft_strncmp(str, ".", 2) == 0 || ft_strncmp(str, "..", 3) == 0);
@@ -39,6 +42,10 @@ int main(int argc, char** argv) {
 		exit(EXIT_FAILURE);
 	}
 	(void)argc;
+	is_tty = isatty(STDOUT_FILENO);
+	ft_dprintf(2, "isatty(%d) = %d\n", 0, isatty(0));
+	ft_dprintf(2, "isatty(%d) = %d, is_tty = %d\n", 1, isatty(1), is_tty);
+	ft_dprintf(2, "isatty(%d) = %d\n", 2, isatty(2));
 
 	flags = parse_flags(argv, file_vector);
 	if (flags == -1u)
