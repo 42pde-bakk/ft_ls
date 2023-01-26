@@ -26,10 +26,8 @@ int collect_children_nodes(t_node* ls_obj) {
 				continue;
 		}
 		childNode = create_new_object(ls_obj->fullpath, pDirent->d_name);
-		if (!childNode) {
-//			ft_dprintf(STDERR_FILENO, "Cant create new object for %s / %s\n", ls_obj->fullpath, pDirent->d_name);
+		if (!childNode)
 			continue;
-		}
 
 		ptrvector_pushback(ls_obj->vector, childNode);
 	}

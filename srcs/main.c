@@ -13,7 +13,7 @@ static bool is_dot_or_double_dot(const char* str) {
 	return (ft_strncmp(str, ".", 2) == 0 || ft_strncmp(str, "..", 3) == 0);
 }
 
-void start_ls(t_node* dataObject) {
+static void start_ls(t_node* dataObject) {
 	if (S_ISDIR(dataObject->statbuf.st_mode)) {
 		if (collect_children_nodes(dataObject) == EXIT_FAILURE) {
 			return;
@@ -48,7 +48,8 @@ int main(int argc, char** argv) {
 		rootObj = create_new_rootnode(".");
 		start_ls(rootObj);
 		destroy_object(rootObj);
-	} else {
+	}
+	else {
 		for (size_t i = 0; i < file_vector->size; i++) {
 			const char* const filename = file_vector->arr[i];
 			rootObj = create_new_rootnode(filename);

@@ -4,7 +4,6 @@
 
 #include <grp.h>
 #include <pwd.h>
-#include <stdio.h>
 #include "t_node.h"
 #include "ft_ls.h"
 #include "ft_printf.h"
