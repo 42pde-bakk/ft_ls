@@ -25,13 +25,13 @@ static void print_total_blocks(const t_ptrvector* vec) {
 
 	for (size_t i = 0; i < vec->size; i++) {
 		const t_node* item = vec->arr[i];
-		total2 += item->statbuf.st_blocks / 2;
-		total += item->statbuf.st_size / 1024;
+		total += item->statbuf.st_size;
+		total2 += item->statbuf.st_blocks;
 		/*
 		 * ls (and therefore ft_ls too) defines a block as 1024 bytes.
 		 */
 	}
-	ft_printf("total %lu\n", MAX(total, total2));
+	ft_printf("total %lu\n", MAX(total / 1024, total2 / 2));
 }
 
 static void print_object_short(const t_node* dataObj) {
