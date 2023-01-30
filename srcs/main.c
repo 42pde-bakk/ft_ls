@@ -50,13 +50,17 @@ int main(int argc, char** argv) {
 
 	if (file_vector->size == 0) {
 		rootObj = create_new_rootnode(".");
-		start_ls(rootObj);
-		destroy_object(rootObj);
+		if (rootObj) {
+			start_ls(rootObj);
+			destroy_object(rootObj);
+		}
 	}
 	else {
 		for (size_t i = 0; i < file_vector->size; i++) {
 			const char* const filename = file_vector->arr[i];
 			rootObj = create_new_rootnode(filename);
+			if (rootObj == NULL)
+				continue;
 			if (file_vector->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R)) {
 				ft_printf("%s:\n", rootObj->name);
 			}

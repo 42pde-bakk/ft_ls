@@ -21,16 +21,19 @@ t_node* create_new_rootnode(const char* arg) {
 	if (g_flags & FLAG_l) {
 		statFunc = lstat;
 	}
-	if ((statFunc(arg, &obj->statbuf)) == -1) {
-		ft_dprintf(STDERR_FILENO, "%s: cannot access '%s': %s\n", get_program_name(), arg, strerror(errno));
-	}
 	obj->name = ft_strdup(arg);
 	obj->fullpath = ft_strdup(arg);
 	if (obj->name == NULL || obj->fullpath == NULL) {
 		exit(EXIT_FAILURE);
 	}
-	if ((obj->vector = ptrvector_init(16, false)) == NULL)
+	if ((obj->vector = ptrvector_init(16, false)) == NULL) {
 		exit(EXIT_FAILURE);
+	}
+	if ((statFunc(arg, &obj->statbuf)) == -1) {
+		ft_dprintf(STDERR_FILENO, "%s: cannot access '%s': %s\n", get_program_name(), arg, strerror(errno));
+		destroy_object(obj);
+		return (NULL);
+	}
 	return (obj);
 }
 
@@ -45,15 +48,15 @@ t_node* create_new_object(const char* prefix, const char* pdirent_name) {
 	obj->fullpath = ft_str3join(prefix, "/", obj->name);
 	if (!obj->fullpath)
 		exit(EXIT_FAILURE);
-	if ((obj->vector = ptrvector_init(16, false)) == NULL)
+	if ((obj->vector = ptrvector_init(16, false)) == NULL) {
 		exit(EXIT_FAILURE);
+	}
 
 	if ((lstat(obj->fullpath, &obj->statbuf)) == -1) {
 		ft_dprintf(STDERR_FILENO, "%s: cannot access '%s': %s\n", get_program_name(), obj->fullpath, strerror(errno));
 		destroy_object(obj);
 		return (NULL);
 	}
-
 	return (obj);
 }
 
