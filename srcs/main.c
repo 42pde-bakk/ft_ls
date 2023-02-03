@@ -9,6 +9,7 @@
 #include "t_node.h"
 #include "ft_ls.h"
 #include "ft_printf.h"
+#include <stdio.h>
 
 int is_tty;
 
@@ -56,20 +57,28 @@ int main(int argc, char** argv) {
 		}
 	}
 	else {
+		t_ptrvector*	objects = ptrvector_init(4, false);
+		if (objects == NULL)
+			exit(EXIT_FAILURE);
 		for (size_t i = 0; i < file_vector->size; i++) {
-			const char* const filename = file_vector->arr[i];
-			rootObj = create_new_rootnode(filename);
+			rootObj = create_new_rootnode(file_vector->arr[i]);
 			if (rootObj == NULL)
 				continue;
-			if (file_vector->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R)) {
+			ptrvector_pushback(objects, rootObj);
+		}
+		ptrvector_sort(objects, &compare_rootnodes);
+		for (size_t i = 0; i < objects->size; i++) {
+			rootObj = objects->arr[i];
+			if (objects->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R)) {
 				ft_printf("%s:\n", rootObj->name);
 			}
 			start_ls(rootObj);
-			if (file_vector->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R) && i < file_vector->size - 1) {
+			if (objects->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R) && i < objects->size - 1) {
 				ft_printf("\n");
 			}
 			destroy_object(rootObj);
 		}
+		ptrvector_destroy(objects);
 	}
 	ptrvector_destroy(file_vector);
 	return (EXIT_SUCCESS);
