@@ -16,6 +16,9 @@ unsigned int parse_flags(char** argv, t_ptrvector* file_vector);
 // srcs/sort.c
 int compare_nodes(const void* dataObject, const void* pivot);
 
+// srcs/compare_rootnodes.c
+int compare_rootnodes(const void* v_dataObject, const void* v_pivot);
+
 // srcs/collect_children_nodes.c
 int collect_children_nodes(t_node* ls_obj);
 

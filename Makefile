@@ -66,11 +66,9 @@ re:
 	$(MAKE) fclean
 	$(MAKE) all
 
-debug: DEBUG=1
-debug:
-	$(MAKE) fclean
-	$(MAKE) all
-
 bonus: BONUS=1
 bonus:
 	$(MAKE) re
+
+debug:
+	make DEBUG=1
