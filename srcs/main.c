@@ -66,6 +66,7 @@ int main(int argc, char** argv) {
 				continue;
 			ptrvector_pushback(objects, rootObj);
 		}
+		// Sort first by filetype, and then by their names
 		ptrvector_sort(objects, &compare_rootnodes);
 		for (size_t i = 0; i < objects->size; i++) {
 			rootObj = objects->arr[i];
@@ -74,6 +75,11 @@ int main(int argc, char** argv) {
 			}
 			start_ls(rootObj);
 			if (objects->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R) && i < objects->size - 1) {
+				// Always print a newline at the end except for the last one
+				ft_printf("\n");
+			}
+			if (!S_ISDIR(rootObj->statbuf.st_mode) && i < objects->size - 1 && S_ISDIR(((t_node *)objects->arr[i + 1])->statbuf.st_mode)) {
+				// Print an extra newline as seperation between regular files and directories
 				ft_printf("\n");
 			}
 			destroy_object(rootObj);
