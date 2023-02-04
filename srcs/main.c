@@ -9,7 +9,6 @@
 #include "t_node.h"
 #include "ft_ls.h"
 #include "ft_printf.h"
-#include <stdio.h>
 
 int is_tty;
 
