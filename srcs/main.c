@@ -13,7 +13,7 @@
 
 int is_tty;
 
-static bool is_dot_or_double_dot(const char* str) {
+static bool is_dot_or_double_dot(const char* const str) {
 	return (ft_strncmp(str, ".", 2) == 0 || ft_strncmp(str, "..", 3) == 0);
 }
 
@@ -34,6 +34,21 @@ static void start_ls(t_node* dataObject) {
 	}
 }
 
+void	loop_objects(const t_ptrvector* objects) {
+	for (size_t i = 0; i < objects->size; i++) {
+		t_node* rootObj = objects->arr[i];
+		if (objects->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R)) {
+			ft_printf("%s:\n", rootObj->name);
+		}
+		start_ls(rootObj);
+		if (objects->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R) && i < objects->size - 1) {
+			// Always print a newline at the end except for the last one
+			ft_printf("\n");
+		}
+		destroy_object(rootObj);
+	}
+}
+
 int main(int argc, char** argv) {
 	unsigned int flags;
 	t_ptrvector* file_vector = ptrvector_init(4, false);
@@ -42,7 +57,6 @@ int main(int argc, char** argv) {
 	if (!file_vector) {
 		exit(EXIT_FAILURE);
 	}
-	(void)argc;
 	is_tty = isatty(STDOUT_FILENO);
 
 	flags = parse_flags(argv, file_vector);
@@ -57,35 +71,29 @@ int main(int argc, char** argv) {
 		}
 	}
 	else {
-		t_ptrvector*	objects = ptrvector_init(4, false);
-		if (objects == NULL)
+		t_ptrvector*	directories = ptrvector_init(4, false);
+		t_ptrvector*	regular_files = ptrvector_init(4, false);
+		if (directories == NULL || regular_files == NULL)
 			exit(EXIT_FAILURE);
 		for (size_t i = 0; i < file_vector->size; i++) {
 			rootObj = create_new_rootnode(file_vector->arr[i]);
 			if (rootObj == NULL)
 				continue;
-			ptrvector_pushback(objects, rootObj);
+			ptrvector_pushback(S_ISDIR(rootObj->statbuf.st_mode) ? directories : regular_files, rootObj);
 		}
-		// Sort first by filetype, and then by their names
-		ptrvector_sort(objects, &compare_rootnodes);
-		for (size_t i = 0; i < objects->size; i++) {
-			rootObj = objects->arr[i];
-			if (objects->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R)) {
-				ft_printf("%s:\n", rootObj->name);
-			}
-			start_ls(rootObj);
-			if (objects->size > 1 && S_ISDIR(rootObj->statbuf.st_mode) && !(g_flags & FLAG_R) && i < objects->size - 1) {
-				// Always print a newline at the end except for the last one
-				ft_printf("\n");
-			}
-			if (!S_ISDIR(rootObj->statbuf.st_mode) && i < objects->size - 1 && S_ISDIR(((t_node *)objects->arr[i + 1])->statbuf.st_mode)) {
-				// Print an extra newline as seperation between regular files and directories
-				ft_printf("\n");
-			}
-			destroy_object(rootObj);
+		// Sort files based on their names/timestamp
+		ptrvector_sort(directories, &compare_nodes);
+		ptrvector_sort(regular_files, &compare_nodes);
+
+		loop_objects(regular_files);
+		if (regular_files->size > 0 && directories->size > 0) {
+			ft_printf("\n");
 		}
-		ptrvector_destroy(objects);
+		loop_objects(directories);
+		ptrvector_destroy(regular_files);
+		ptrvector_destroy(directories);
 	}
 	ptrvector_destroy(file_vector);
 	return (EXIT_SUCCESS);
+	(void)argc;
 }
